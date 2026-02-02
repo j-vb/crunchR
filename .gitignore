@@ -28,6 +28,9 @@ vignettes/*.pdf
 # R-related
 .DS_Store
 renv/**
+!renv/activate.R
+!renv/settings.json
+!renv.lock
 
 # Specific paths
 data/data_input/*.csv
