@@ -1,0 +1,39 @@
+Package: jvb.r.helpers
+Title: Package with Helper Functions for jvb.r.helpers
+Version: 0.0.0.9000
+Authors@R: 
+    person("Jesse", "van Bussel", , "jesse-van-bussl@hotmail.de", role = c("aut", "cre"))
+Description: This package holds a collection of often used functions
+    created by Jesse van Bussel.  The functions themselves are seperated
+    into categories, and range from general R-programming functions, to
+    more specific functions related to statistics.
+License: MIT + file LICENSE
+Imports: 
+    crayon,
+    data.table,
+    dplyr,
+    ggplot2,
+    gridExtra,
+    here,
+    magrittr,
+    naniar,
+    openxlsx,
+    pagedown,
+    pastecs,
+    psych,
+    remotes,
+    rmarkdown,
+    rstudioapi,
+    shiny,
+    stats,
+    tibble,
+    tools,
+    utils
+Suggests: 
+    mockery,
+    readxl,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2

@@ -1,0 +1,11 @@
+Date:  08, June, 2025 - 09:23:46 
+
+
+-- R CMD check results -------------------------------------------------------------------------------------------------------------------------------------------------------- jvb.r.helpers 0.0.0.9000 ----
+Duration: 1m 30.7s
+
+> checking for non-standard things in the check directory ... NOTE
+  Found the following files/directories:
+    'output'
+
+0 errors v | 0 warnings v | 1 note x

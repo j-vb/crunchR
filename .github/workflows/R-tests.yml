@@ -1,0 +1,75 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:   # manual trigger
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository (latest major version)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up R (explicit version)
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.4'
+
+      # Cache the renv library (packages)
+      - name: Cache renv packages and library
+        uses: actions/cache@v3
+        with:
+          path: |
+            renv/library
+            ~/.cache/R/renv
+          key: ${{ runner.os }}-renv-${{ hashFiles('renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
+      # Install system‑level dependencies (keep only what you need)
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcurl4-openssl-dev pkg-config libfontconfig1-dev \
+            libfreetype6-dev libfribidi-dev libgit2-dev libharfbuzz-dev \
+            libjpeg-dev libpng-dev libtiff-dev libx11-dev pandoc
+
+      # Install renv and restore the exact R environment
+      - name: Install renv and restore environment
+        run: |
+          Rscript -e 'install.packages("renv")'
+          Rscript -e 'renv::restore()'   # pulls in devtools, testthat, etc.
+
+      # Run the test suite – fail the job on any error
+      - name: Run tests
+        id: run-tests
+        run: |
+          set -e                               # abort on any non‑zero exit
+          Rscript -e 'devtools::test(stop_on_error = TRUE)'
+
+      # Ensure a cacheable folder exists (prevents “path does not exist” warnings)
+      - name: Ensure test‑result folder exists
+        if: always()                         # run even if tests failed
+        run: |
+          mkdir -p .Rcheck testthat/_snaps   # creates empty dirs if they’re missing
+
+      # Cache the test artefacts for later debugging
+      - name: Cache test results
+        if: always()                         # always run, even on failure
+        uses: actions/cache@v3
+        with:
+          path: |
+            .Rcheck
+            testthat/_snaps
+          # Use the commit SHA so each change gets its own cache entry
+          key: ${{ runner.os }}-tests-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-tests-

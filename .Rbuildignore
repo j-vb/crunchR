@@ -1,0 +1,11 @@
+^renv$
+^renv\.lock$
+^jvb.r.helpers\.helpers\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^\.lintr$
+^\.github$
+^output$
+^tests/output$
+^code$
+^dev$
